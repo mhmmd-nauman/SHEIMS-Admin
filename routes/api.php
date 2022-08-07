@@ -18,3 +18,4 @@ use App\Http\Controllers\CityController;
     return $request->user();
 });*/
 Route::apiResource('cities',CityController::class);
+Route::get("call_v1",[CityController::class,"call_v1"]);

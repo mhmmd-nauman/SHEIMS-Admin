@@ -16,7 +16,21 @@ class CityController extends Controller
     public function store(Request $request)
     {
         $city = City::create($request->all());
+        // we need to propogate that city to other services
+        $req = \Http::post("http://localhost:8000/api/city/add",[
+            'id' => $city->id,
+            'country' => $request->input('country'),
+            'region' => $request->input('region'),
+            'title' => "what ".$request->input('title')
+        ]);
+        if($req->failed()){
+            return response("it failed",Response::HTTP_CREATED);
+        }
         return response($city,Response::HTTP_CREATED);
+    }
+    public function call_v1(){
+        $posts = \Http::get("http://localhost:8000/api/posts");
+        return response($posts,Response::HTTP_OK);
     }
     /*
     public function add(Request $request)
